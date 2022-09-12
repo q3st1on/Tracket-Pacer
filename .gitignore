@@ -3,8 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 network.html
-key
-key.pub
+delkey
+delkey.pub
 
 # C extensions
 *.so
