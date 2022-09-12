@@ -70,7 +70,6 @@ def addArgs(parser):
     addBoolArg(parser, 'print', 'liveprint', "Enables live output of packet information", Destination='PRINT')
     addBoolArg(parser, 'mc', 'multicast', "Enables multicast packet recording and maping.", Destination='MULTICAST')
     addBoolArg(parser, 'bc', 'broadcast', "Enables broadcast packet recording and maping.", Destination='BROADCAST')
-    addBoolArg(parser, 'mon', 'monitor', "Switches interface into monitor mode.", Destination='MONITOR')
     addBoolArg(parser, 'nc', 'non-contributary', "Enables the display of non-contributary entities on the graph.", Destination='NON_CONTRIB')
     parser.add_argument('-i', '--interface', dest='INTERFACE', help="Specifies the network interface to listen on.")
 
