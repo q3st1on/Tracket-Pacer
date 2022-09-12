@@ -1,3 +1,5 @@
+from typing import TypeGuard, Union
+from argparse import *
 import textwrap
 import math
 
@@ -31,7 +33,7 @@ class Data:
         self.packetlength = 0
         self.packmon = []
 
-    def protExists(self, protocol):
+    def protExists(self, protocol: Union[str, int]) -> TypeGuard[list[bool, int]]:
         for x in range(len(self.packmon)):
             if protocol in self.packmon[x]:
                 return [True, x]
@@ -43,12 +45,12 @@ class Data:
 COLOURS = COLOURVALS()
 FORMAT = FORMATVALS()
 
-def getMacAddr(macRaw):
+def getMacAddr(macRaw: bytes) -> TypeGuard[str]:
     byteStr = map('{:02x}'.format, macRaw)
     macAddr = ':'.join(byteStr).upper()
     return macAddr
 
-def formatMultiLine(prefix, string, size=80):
+def formatMultiLine(prefix: str, string: str, size=80) -> TypeGuard[list[str]]:
     size -= len(prefix)
     if isinstance(string, bytes):
         string = ''.join(r'\x{:02x}'.format(byte) for byte in string)
@@ -56,15 +58,15 @@ def formatMultiLine(prefix, string, size=80):
             size -= 1
     return [prefix + line for line in textwrap.wrap(string, size)]
 
-def getIp(addr):
+def getIp(addr: bytes) -> TypeGuard[str]:
     return '.'.join(map(str, addr))
 
-def addBoolArg(parser, short, name, helpText, Destination):
+def addBoolArg(parser: ArgumentParser, short: str, name: str, helpText: str, Destination: str):
     group = parser.add_mutually_exclusive_group(required=False)
     group.add_argument('-'+short, '--' + name, dest=Destination, action='store_true', help=helpText)
     parser.set_defaults(**{name:False})
 
-def addArgs(parser):
+def addArgs(parser: ArgumentParser):
     parser.add_argument('-n', '--packet-num', dest='PACKET_NUM', help="The number of packets used to make the network map.")
     parser.add_argument('-t', '--capture-time', dest='CAPTURE_TIME', help="The length of time in which to capture packets")
     addBoolArg(parser, 'print', 'liveprint', "Enables live output of packet information", Destination='PRINT')
@@ -91,7 +93,7 @@ def asciiArt():
 '''.format(a = dollarColour, b = COLOURS.WHITE)
     printLines([('{}\n{}\n{}'.format(bdrStr, asciiStr, bdrStr))])
 
-def intlen(n) -> int:
+def intlen(n: int) -> TypeGuard[int]:
     if n > 0:
         digits = int(math.log10(n))+1
     elif n == 0:
@@ -100,11 +102,11 @@ def intlen(n) -> int:
         digits = int(math.log10(-n))+2
     return digits
 
-def printLines(n):
+def printLines(n: list[str]):
     for i in n:
         print(i)
 
-def printSummary(dataStore, interface):   
+def printSummary(dataStore: Data, interface: str):   
     dataStore.genNames()
     collumn1 = [
         '            Packets recieved: {}{}{}'.format(COLOURS.GREEN, dataStore.packetRecieved, COLOURS.WHITE),
@@ -148,7 +150,7 @@ def printSummary(dataStore, interface):
         else:
             collumn3.append(39*' ')
 
-    def headPad(d, h):
+    def headPad(d: int, h: str) -> TypeGuard[str]:
         if d %2 == 0:
             h = (d//2)*' '+h+(d//2)*' '
         else:

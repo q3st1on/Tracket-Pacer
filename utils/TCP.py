@@ -1,8 +1,8 @@
 from utils.utils import formatMultiLine, COLOURS, FORMAT, printLines
+from typing import TypeGuard
 from struct import unpack
 
-
-def tcpHead( rawData):
+def tcpHead(rawData: bytes) -> TypeGuard[tuple]:
     (srcPort, destPort, sequence, acknowledgment, offsetReservedFlags) = unpack('! H H L L H', rawData[:14])
     offset = (offsetReservedFlags >> 12) * 4
     flagUrg = (offsetReservedFlags & 32) >> 5
@@ -14,7 +14,7 @@ def tcpHead( rawData):
     data = rawData[offset:]
     return srcPort, destPort, sequence, acknowledgment, flagUrg, flagAck, flagPsh, flagRst, flagSyn, flagFin, data
 
-def printTCP(tcp):
+def printTCP(tcp: tuple):
     printList = []
     printList.append('{} -TCP Segment:'.format(FORMAT.TAB_1))
     printList.append('{} -Source Port: {}{}{}, Destination Port: {}{}{}'.format(FORMAT.TAB_2, COLOURS.PURPLE, tcp[0], COLOURS.WHITE, COLOURS.CYAN, tcp[1], COLOURS.WHITE))
@@ -24,7 +24,7 @@ def printTCP(tcp):
     printList.append('{} -RST: {}{}{}, SYN: {}{}{}, FIN:{}{}{}'.format(FORMAT.TAB_3, COLOURS.TAN, tcp[7], COLOURS.WHITE, COLOURS.TAN, tcp[8], COLOURS.WHITE, COLOURS.TAN, tcp[9], COLOURS.WHITE))
     printLines(printList)
 
-def printOtherTCP(tcp):
+def printOtherTCP(tcp: tuple):
     printList = []
     printList.append('{} -TCP Data:'.format(FORMAT.TAB_3))
     printList.extend(formatMultiLine(FORMAT.TAB_3, tcp[10]))

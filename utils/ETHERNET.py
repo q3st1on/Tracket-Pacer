@@ -161,14 +161,14 @@ ETHERNET = {
     }
 }
 
-def printETH(eth):
+def printETH(eth: tuple):
     printList = []
     printList.append('\nEthernet Frame:')
     printList.append('Destination: {}{}{}, Source: {}{}{}, Protocol: {}{}{} ({}{}{})'.format(COLOURS.GREEN, eth[0], COLOURS.WHITE, COLOURS.GREEN, eth[1], COLOURS.WHITE, COLOURS.TAN, eth[3], COLOURS.WHITE, COLOURS.TAN, eth[2], COLOURS.WHITE))
     printLines(printList)
 
 
-def printOtherETH(eth):
+def printOtherETH(eth: tuple):
     printList = []
     printList.append('Ethernet Data:')
     printList.extend(formatMultiLine(FORMAT.TAB_1, eth[3]))

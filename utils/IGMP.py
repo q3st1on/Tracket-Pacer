@@ -1,4 +1,5 @@
 from utils.utils import getIp, COLOURS, FORMAT, printLines
+from typing import TypeGuard
 from struct import unpack
 
 IGMP = {
@@ -11,7 +12,7 @@ IGMP = {
     }
 }
 
-def igmpHead(rawData):
+def igmpHead(rawData: bytes) -> TypeGuard[tuple]:
     packetType, respTime, checksum = unpack('! B B H', rawData[:4])
     groupAddr = getIp(rawData[4:])
     try:
@@ -20,7 +21,7 @@ def igmpHead(rawData):
         packetType = f"Unnasigned ({packetType})"
     return packetType, respTime, checksum, groupAddr
 
-def printIGMP(igmp):
+def printIGMP(igmp: tuple):
     printList = []
     printList.append('{} -IGMP Packet:'.format(FORMAT.TAB_1))
     printList.append('{} -Type: {}, Max Response Time: {}, Checksum {}'.format(FORMAT.TAB_2, igmp[0], igmp[1], igmp[2]))

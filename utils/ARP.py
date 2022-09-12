@@ -1,4 +1,5 @@
 from utils.utils import getMacAddr, getIp, COLOURS, FORMAT, printLines
+from typing import TypeGuard
 from struct import unpack
 
 ARP = {
@@ -85,7 +86,7 @@ ARP = {
     }
 }
 
-def arpHead(rawData):
+def arpHead(rawData: bytes) -> TypeGuard[tuple]:
     HTYPE, PTYPE, HLEN, PLEN, OPCODE, SHWA, SPA, THWA, TPA = unpack("! H H B B H 6s 4s 6s 4s", rawData[:28])
     SHWA = getMacAddr(SHWA)
     SPA = getIp(SPA)
@@ -106,7 +107,7 @@ def arpHead(rawData):
         OPCODE = f"Unnasigned {COLOURS.WHITE}({COLOURS.TAN}{OPCODE}{COLOURS.WHITE})"
     return HTYPE, PTYPE, HLEN, PLEN, OPCODE, SHWA, SPA, THWA, TPA, data
 
-def printARP(arp):
+def printARP(arp: tuple):
     printList = []
     printList.append('{} -ARP Packet:'.format(FORMAT.TAB_1))
     printList.append('{}       Hardware Type: {}{}{}'.format(FORMAT.TAB_2, COLOURS.TAN, arp[0], COLOURS.WHITE))

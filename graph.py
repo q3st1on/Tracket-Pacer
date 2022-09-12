@@ -1,7 +1,9 @@
+from typing import TypeGuard
+from utils.utils import Data
 from pyvis.network import Network
 
 class dataNetwork:
-    def __init__(self, dataStore, filename, nonContrib=False):
+    def __init__(self, dataStore: Data, filename: str, nonContrib=False):
 
         options = {
             "nodes": {
@@ -93,7 +95,7 @@ class dataNetwork:
             else:
                 working[id] = working[id]+i[2]
 
-        def invert(s):
+        def invert(s: str) -> TypeGuard[str]:
             tup = tuple(map(int, s[1:len(s)-1].split(', ')))
             return '({}, {})'.format(tup[1], tup[0])
 
